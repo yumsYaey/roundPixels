@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Corner Rounding</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin: 20px;
+        }
+        button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pixel Corner Rounding Tool</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <canvas id="canvas"></canvas>
+    <br>
+    <button id="downloadButton" style="display:none;">Download Processed Image</button>
+
+    <script src="app.js"></script>
+</body>
+</html>
