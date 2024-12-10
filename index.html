@@ -3,19 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Corner Rounding</title>
+    <title>Pixel Art with Rounded Corners</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
         }
-        #canvas {
-            border: 1px solid black;
+        #pixelCanvas {
+            display: grid;
             margin-top: 20px;
+            grid-template-columns: repeat(16, 20px); /* Change grid size as needed */
+            grid-template-rows: repeat(16, 20px);    /* Change grid size as needed */
+            gap: 1px;
         }
-        input[type="file"] {
-            margin: 20px;
+        .pixel {
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        #colorPicker {
+            margin-top: 20px;
         }
         button {
             margin-top: 20px;
@@ -23,11 +33,13 @@
     </style>
 </head>
 <body>
-    <h1>Pixel Corner Rounding Tool</h1>
-    <input type="file" id="imageInput" accept="image/*">
-    <canvas id="canvas"></canvas>
-    <br>
-    <button id="downloadButton" style="display:none;">Download Processed Image</button>
+    <h1>Pixel Art Drawing with Corner Rounding</h1>
+
+    <div id="pixelCanvas"></div>
+
+    <input type="color" id="colorPicker" value="#000000">
+    <button id="roundButton">Round Corners</button>
+    <button id="downloadButton" style="display:none;">Download Image</button>
 
     <script src="app.js"></script>
 </body>
