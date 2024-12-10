@@ -1,69 +1,80 @@
-const gridSize = 16; // Size of the pixel art grid (16x16 in this example)
-const pixelCanvas = document.getElementById('pixelCanvas');
+const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
 const colorPicker = document.getElementById('colorPicker');
-const roundButton = document.getElementById('roundButton');
+const brushSizeSlider = document.getElementById('brushSize');
+const roundCornersButton = document.getElementById('roundCornersButton');
 const downloadButton = document.getElementById('downloadButton');
 
-let pixels = [];
+let isDrawing = false;
+let currentColor = '#000000';
+let brushSize = 1;
 
-// Initialize the pixel grid
-for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++) {
-        const pixel = document.createElement('div');
-        pixel.classList.add('pixel');
-        pixel.setAttribute('data-x', x);
-        pixel.setAttribute('data-y', y);
-        pixel.addEventListener('click', changePixelColor);
-        pixelCanvas.appendChild(pixel);
-        pixels.push({ x, y, color: '#ffffff' }); // Default color is white
+// Set default brush size
+brushSizeSlider.addEventListener('input', () => {
+    brushSize = brushSizeSlider.value;
+});
+
+// Start drawing on mouse down
+canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    draw(e);
+});
+
+// Stop drawing on mouse up
+canvas.addEventListener('mouseup', () => {
+    isDrawing = false;
+    ctx.beginPath();
+});
+
+// Draw pixels based on mouse movement
+canvas.addEventListener('mousemove', (e) => {
+    if (isDrawing) {
+        draw(e);
     }
+});
+
+// Draw the pixel art at mouse position
+function draw(e) {
+    const x = e.offsetX;
+    const y = e.offsetY;
+
+    ctx.fillStyle = currentColor;
+    ctx.fillRect(x - (x % brushSize), y - (y % brushSize), brushSize, brushSize);
 }
 
-// Change the color of the pixel on click
-function changePixelColor(e) {
-    const pixel = e.target;
-    const x = parseInt(pixel.getAttribute('data-x'));
-    const y = parseInt(pixel.getAttribute('data-y'));
-    const color = colorPicker.value;
+// Change the selected color
+colorPicker.addEventListener('input', (e) => {
+    currentColor = e.target.value;
+});
+
+// Round the corners of the artwork
+roundCornersButton.addEventListener('click', () => {
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
     
-    pixel.style.backgroundColor = color;
-    pixels[y * gridSize + x].color = color; // Update color data
-}
-
-// Round the corners of the pixel art
-roundButton.addEventListener('click', function() {
-    const canvas = document.createElement('canvas');
-    canvas.width = gridSize * 20;
-    canvas.height = gridSize * 20;
-    const ctx = canvas.getContext('2d');
+    // Create a new canvas to apply the corner rounding
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
     
-    // Draw the pixels on a canvas
-    pixels.forEach((pixel, index) => {
-        const x = (pixel.x * 20);
-        const y = (pixel.y * 20);
-        ctx.fillStyle = pixel.color;
-        ctx.fillRect(x, y, 20, 20);
-    });
+    // Draw original image data on temporary canvas
+    tempCtx.putImageData(imageData, 0, 0);
 
-    // Apply the rounding to the image
-    applyCornerRounding(ctx, canvas.width, canvas.height);
+    // Apply rounding effect to the corners
+    applyCornerRounding(tempCtx, canvas.width, canvas.height);
 
-    // Display the download button
+    // Copy the image data back to the main canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(tempCanvas, 0, 0);
+
+    // Display download button
     downloadButton.style.display = 'inline';
-
-    // Prepare the image for download
-    downloadButton.addEventListener('click', function() {
-        const dataUrl = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = 'rounded-pixel-art.png';
-        link.click();
-    });
 });
 
 // Apply corner rounding effect to the canvas
 function applyCornerRounding(ctx, width, height) {
-    const radius = 5; // Adjust the corner rounding radius
+    const radius = 20; // Adjust the rounding radius
     
     ctx.globalCompositeOperation = 'destination-over';
     ctx.beginPath();
@@ -77,3 +88,12 @@ function applyCornerRounding(ctx, width, height) {
     ctx.closePath();
     ctx.fill();
 }
+
+// Download the final image as PNG
+downloadButton.addEventListener('click', () => {
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'pixel-art-with-rounded-corners.png';
+    link.click();
+});
