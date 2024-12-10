@@ -1,53 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Art with Rounding</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        #canvasContainer {
-            position: relative;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        canvas {
-            border: 1px solid #000;
-        }
-        #controls {
-            margin-top: 20px;
-        }
-        input[type="color"], input[type="range"] {
-            margin: 5px;
-        }
-        button {
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Art Corner Rounding Tool</title>
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
+  <h1>Pixel Art Corner Rounding Tool</h1>
+  
+  <input type="file" id="uploadImage" accept="image/png, image/jpeg" />
+  <br />
+  <canvas id="canvas"></canvas>
+  <br />
+  <button onclick="roundCorners()">Round Corners</button>
 
-<h1>Pixel Art Canvas</h1>
-
-<div id="canvasContainer">
-    <canvas id="drawingCanvas" width="320" height="320"></canvas>
-</div>
-
-<div id="controls">
-    <label for="colorPicker">Color: </label>
-    <input type="color" id="colorPicker" value="#000000">
-    
-    <label for="brushSize">Brush Size: </label>
-    <input type="range" id="brushSize" min="1" max="10" value="1">
-    
-    <button id="roundCornersButton">Round Corners</button>
-    <button id="downloadButton" style="display:none;">Download Image</button>
-</div>
-
-<script src="app.js"></script>
+  <script src="rounder.js"></script>
 </body>
 </html>
