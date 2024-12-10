@@ -3,44 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Art with Rounded Corners</title>
+    <title>Pixel Art with Rounding</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
         }
-        #pixelCanvas {
-            display: grid;
+        #canvasContainer {
+            position: relative;
+            display: inline-block;
             margin-top: 20px;
-            grid-template-columns: repeat(16, 20px); /* Change grid size as needed */
-            grid-template-rows: repeat(16, 20px);    /* Change grid size as needed */
-            gap: 1px;
         }
-        .pixel {
-            width: 20px;
-            height: 20px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            cursor: pointer;
+        canvas {
+            border: 1px solid #000;
         }
-        #colorPicker {
+        #controls {
             margin-top: 20px;
+        }
+        input[type="color"], input[type="range"] {
+            margin: 5px;
         }
         button {
-            margin-top: 20px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Pixel Art Drawing with Corner Rounding</h1>
 
-    <div id="pixelCanvas"></div>
+<h1>Pixel Art Canvas</h1>
 
+<div id="canvasContainer">
+    <canvas id="drawingCanvas" width="320" height="320"></canvas>
+</div>
+
+<div id="controls">
+    <label for="colorPicker">Color: </label>
     <input type="color" id="colorPicker" value="#000000">
-    <button id="roundButton">Round Corners</button>
+    
+    <label for="brushSize">Brush Size: </label>
+    <input type="range" id="brushSize" min="1" max="10" value="1">
+    
+    <button id="roundCornersButton">Round Corners</button>
     <button id="downloadButton" style="display:none;">Download Image</button>
+</div>
 
-    <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
